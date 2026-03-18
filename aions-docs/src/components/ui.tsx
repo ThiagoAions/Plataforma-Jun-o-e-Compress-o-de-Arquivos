@@ -297,3 +297,28 @@ export const PageHeader: React.FC<{
     <p style={{ fontSize: 13, color: 'var(--text-secondary)' }}>{sub}</p>
   </div>
 )
+
+// ─── ImagePreview ────────────────────────────────────────────────────────────
+
+export const ImagePreview: React.FC<{ file: File }> = ({ file }) => {
+  const [url, setUrl] = React.useState<string | null>(null)
+
+  React.useEffect(() => {
+    const u = URL.createObjectURL(file)
+    setUrl(u)
+    return () => URL.revokeObjectURL(u)
+  }, [file])
+
+  if (!url) return null
+  return (
+    <div style={{
+      marginTop: 12, borderRadius: 'var(--radius-md)',
+      overflow: 'hidden', border: '1px solid var(--border-default)',
+      background: '#fff', maxHeight: 240, display: 'flex',
+      alignItems: 'center', justifyContent: 'center',
+    }}>
+      <img src={url} alt="preview"
+        style={{ maxWidth: '100%', maxHeight: 240, objectFit: 'contain', display: 'block' }} />
+    </div>
+  )
+}

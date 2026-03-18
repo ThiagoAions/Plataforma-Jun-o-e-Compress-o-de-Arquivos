@@ -1,9 +1,10 @@
 import React from 'react'
 import { RefreshCcw } from 'lucide-react'
-import { DropZone, FileList, ProgressBar, Alert, Btn, SectionCard, PageHeader } from './ui'
+import { DropZone, FileList, ProgressBar, Alert, Btn, SectionCard, PageHeader, ImagePreview } from './ui'
 import { useFileManager } from '@/hooks/useFileManager'
 import { useProcessing } from '@/hooks/useProcessing'
 import { imagesToPDF, downloadFile } from '@/utils/pdf'
+
 
 interface ConvertToolProps {
   onBack: () => void
@@ -49,6 +50,10 @@ const ConvertTool: React.FC<ConvertToolProps> = ({ onBack, onSuccess }) => {
           sublabel="JPG e PNG · Múltiplas imagens → um único PDF"
         />
         <FileList files={files} onRemove={removeFile} onReorder={reorderFiles} />
+
+        {files.map(f => f.file.type.startsWith('image/') && (
+        <ImagePreview key={f.id} file={f.file} />
+        ))}
 
         {files.length > 0 && (
           <>
